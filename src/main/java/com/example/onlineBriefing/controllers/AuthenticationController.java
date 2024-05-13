@@ -1,7 +1,6 @@
 package com.example.onlineBriefing.controllers;
 
 import com.example.onlineBriefing.models.LoginMoodle;
-import com.example.onlineBriefing.repositories.LoginMoodleRepository;
 import com.example.onlineBriefing.services.LoginMoodleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

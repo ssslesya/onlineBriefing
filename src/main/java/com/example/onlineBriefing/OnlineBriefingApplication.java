@@ -8,6 +8,5 @@ public class OnlineBriefingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(OnlineBriefingApplication.class, args);
-		//hi bro nice dick
 	}
 }
