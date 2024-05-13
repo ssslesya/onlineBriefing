@@ -11,5 +11,6 @@ import java.util.List;
 public interface SubjectRepository extends JpaRepository<Subject,Long> {
 
     List<Subject> findAllByIdProfile(Integer idProfile);
+    List<Subject> findAllByIdTeacher(Integer idTeacher);
 
 }

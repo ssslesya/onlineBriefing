@@ -22,4 +22,10 @@ public class SubjectController {
                 .body(subjectService.getAllSubjectsByIdProfile(id_profile));
     }
 
+    @GetMapping(value = "/getSubjectsByTeacher/{id_teacher}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getSubjectsByTeacher(@PathVariable Integer id_teacher) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(subjectService.getAllSubjectsByIdTeacher(id_teacher));
+    }
+
 }

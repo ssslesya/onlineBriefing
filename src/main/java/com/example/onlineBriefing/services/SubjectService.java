@@ -17,5 +17,8 @@ public class SubjectService {
     public List<Subject> getAllSubjectsByIdProfile(Integer idProfile) {
         return subjectRepository.findAllByIdProfile(idProfile);
     }
+    public List<Subject> getAllSubjectsByIdTeacher(Integer idTeacher) {
+        return subjectRepository.findAllByIdTeacher(idTeacher);
+    }
 
 }
