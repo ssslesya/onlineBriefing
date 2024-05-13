@@ -15,6 +15,5 @@ public class AuthenticationController {
     public ResponseEntity<?> logClient(@RequestBody String login, String status){
         LoginMoodle loginMoodle = new LoginMoodle(login, status);
         return loginMoodleService.auth(loginMoodle);
-        //ЖЖЖЖЖЖЖЖЖЖОПА
     }
 }
