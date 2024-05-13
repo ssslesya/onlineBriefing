@@ -19,9 +19,9 @@ public class NewsController {
     private NewsService newsService;
 
     @GetMapping(value = "/getNews/{id_profile}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getNews(@PathVariable Integer id_prof) {
+    public ResponseEntity<?> getNews(@PathVariable Integer id_profile) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(newsService.getAllNewsByIdProfile(id_prof));
+                .body(newsService.getAllNewsByIdProfile(id_profile));
     }
 
 

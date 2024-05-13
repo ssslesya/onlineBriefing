@@ -1,7 +1,7 @@
 package com.example.onlineBriefing.controllers;
 
+import com.example.onlineBriefing.services.BriefingService;
 import com.example.onlineBriefing.services.NewsService;
-import com.example.onlineBriefing.services.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @RequestMapping("/briefing")
-public class SubjectController {
+public class BriefingController {
 
     @Autowired
-    private SubjectService subjectService;
+    private BriefingService briefingService;
 
-    @GetMapping(value = "/getSubjects/{id_profile}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getSubjects(@PathVariable Integer id_profile) {
+    @GetMapping(value = "/getBriefings/{id_subject}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getBriefings(@PathVariable Integer id_subject) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(subjectService.getAllSubjectsByIdProfile(id_profile));
+                .body(briefingService.getAllBriefingsByIdSubject(id_subject));
     }
 
 }
