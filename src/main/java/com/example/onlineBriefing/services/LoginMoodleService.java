@@ -12,10 +12,7 @@ public class LoginMoodleService {
 
     @Autowired
     private LoginMoodleRepository loginMoodleRepository;
-    public ResponseEntity<?> auth(LoginMoodle loginMoodle){
-        if(loginMoodleRepository.findByLogin(loginMoodle.getLogin()) == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(loginMoodle);
+    public LoginMoodle auth(LoginMoodle loginMoodle){
+        return loginMoodleRepository.findByLogin(loginMoodle.getLogin());
     }
 }

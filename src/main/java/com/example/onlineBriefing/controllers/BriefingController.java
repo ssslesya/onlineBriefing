@@ -1,5 +1,7 @@
 package com.example.onlineBriefing.controllers;
 
+import com.example.onlineBriefing.models.AnswerStudent;
+import com.example.onlineBriefing.services.AnswerStudentService;
 import com.example.onlineBriefing.services.BriefingService;
 import com.example.onlineBriefing.services.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/briefing")
@@ -15,11 +19,21 @@ public class BriefingController {
 
     @Autowired
     private BriefingService briefingService;
+    @Autowired
+    AnswerStudentService answerStudentService;
+
 
     @GetMapping(value = "/getBriefings/{id_subject}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBriefings(@PathVariable Integer id_subject) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(briefingService.getAllBriefingsByIdSubject(id_subject));
+    }
+
+    @PostMapping("/addAnswer")//Добавляем ответы студента
+    public ResponseEntity<?> addAnswerStudent(@RequestBody List<AnswerStudent> answerStudents) {
+        List<AnswerStudent> addedAnswerStudents = answerStudentService.addAnswer(answerStudents);//Добавляем в БД
+        System.out.println(answerStudentService.checkAnswer(addedAnswerStudents)); //Ответы на вопросы с автоматической проверкой сразу проверяются
+        return ResponseEntity.ok(addedAnswerStudents);
     }
 
 }

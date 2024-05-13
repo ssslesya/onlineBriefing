@@ -1,5 +1,6 @@
 package com.example.onlineBriefing.services;
 
+import com.example.onlineBriefing.models.Teacher;
 import com.example.onlineBriefing.repositories.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +11,7 @@ public class TeacherService {
 
     @Autowired
     private TeacherRepository teacherRepository;
-    public ResponseEntity<?> getTeacherByLogin(Integer login){
-        if(teacherRepository.findByLogin(login) == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(teacherRepository.findByLogin(login)) ;
+    public Teacher getTeacherByLogin(Integer login){
+        return teacherRepository.findByLogin(login) ;
     }
 }

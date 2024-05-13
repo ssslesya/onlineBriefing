@@ -14,6 +14,9 @@ public class QuestionController {
     private QuestionService questionServiceService;
     @GetMapping("/questions/{id_briefing}")
     public ResponseEntity<?> getQuestions(@PathVariable Integer id_briefing){
-        return questionServiceService.getQuestionsByIdBriefing(id_briefing);
+        if(questionServiceService.getQuestionsByIdBriefing(id_briefing).isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(questionServiceService.getQuestionsByIdBriefing(id_briefing)) ;
     }
 }

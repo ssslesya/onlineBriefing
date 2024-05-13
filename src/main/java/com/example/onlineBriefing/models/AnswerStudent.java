@@ -23,7 +23,7 @@ public class AnswerStudent {
     private Integer idStudent;
 
     @Column(name = "id_question", nullable = false)
-    private Integer idQuestion;
+    private Integer question;
 
     @Column(name = "text")
     private String text;
@@ -31,4 +31,9 @@ public class AnswerStudent {
     @Column(name = "accuracy_percent", precision = 5, scale = 2, columnDefinition = "NUMERIC(5,2) CHECK (accuracy_percent >= 0 AND accuracy_percent <= 100)")
     private BigDecimal accuracy_percent;
 
+    public AnswerStudent(Integer idStudent, Integer question, String text) {
+        this.idStudent = idStudent;
+        this.question = question;
+        this.text = text;
+    }
 }
