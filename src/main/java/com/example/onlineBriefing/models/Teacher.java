@@ -28,5 +28,5 @@ public class Teacher {
     private String patronymic;
 
     @Column(name = "id_login", nullable = false)
-    private Integer id_login;
+    private Integer login;
 }

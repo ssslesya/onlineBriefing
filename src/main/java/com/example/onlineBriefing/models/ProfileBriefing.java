@@ -15,9 +15,9 @@ public class ProfileBriefing {
 
     @Id //??? вроде нужно просто иначе ошибка что каждая ентити должна иметь свой ид
     @Column(name = "id_profile", nullable = false)
-    private Integer id_profile;
+    private Integer idProfile;
 
     @Column(name = "id_briefing", nullable = false)
-    private Integer id_briefing;
+    private Integer idBriefing;
 
 }

@@ -18,8 +18,8 @@ public class Plagiat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "id_answer_student1", nullable = false)
-    private Integer id_answer_student1;
+    private Integer idAnswerStudent1;
 
     @Column(name = "id_answer_student2", nullable = false)
-    private Integer id_answer_student2;
+    private Integer idAnswerStudent2;
 }

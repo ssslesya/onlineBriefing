@@ -20,14 +20,14 @@ public class News {
     private Integer id;
 
     @Column(name = "date_start", nullable = false)
-    private LocalDateTime date_start;
+    private LocalDateTime dateStart;
 
     @Column(name = "text", nullable = false)
     private String text;
 
     @Column(name = "id_teacher", nullable = false)
-    private Integer id_teacher;
+    private Integer idTeacher;
 
     @Column(name = "id_profile", nullable = false)
-    private Integer id_profile;
+    private Integer idProfile;
 }

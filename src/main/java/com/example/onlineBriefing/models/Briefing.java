@@ -21,7 +21,7 @@ public class Briefing {
     private Integer id;
 
     @Column(name = "id_subject", nullable = false)
-    private Integer id_subject;
+    private Integer idSubject;
 
     @Column(name = "number", nullable = false)
     private Integer number;
@@ -35,8 +35,8 @@ public class Briefing {
     @Column(name = "status")
     private String status;//ENUM:   OPEN, CLOSE
 
-    public Briefing(Integer id_subject, Integer number, String title, Duration duration, String status) {
-        this.id_subject = id_subject;
+    public Briefing(Integer idSubject, Integer number, String title, Duration duration, String status) {
+        this.idSubject = idSubject;
         this.number = number;
         this.title = title;
         this.duration = duration;

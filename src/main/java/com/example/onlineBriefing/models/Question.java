@@ -17,24 +17,24 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "id_briefing", nullable = false)
-    private Integer id_briefing;
+    private Integer briefing;
 
     @Column(name = "text", nullable = false)
     private String text;
 
     @Column(name = "type_verification")
-    private String type_verification;
+    private String typeVerification;
 
     @Column(name = "answer")
     private String answer;
 
     @Builder(toBuilder = true)
-    public Question(Integer id, Integer id_briefing, String text, String type_verification, String answer) {
+    public Question(Integer id, Integer briefing, String text, String typeVerification, String answer) {
         this.id = id;
-        this.id_briefing = id_briefing;
+        this.briefing = briefing;
         this.text = text;
-        this.type_verification = type_verification;
-        if (type_verification.equals("automatically")) {
+        this.typeVerification = typeVerification;
+        if (typeVerification.equals("automatically")) {
             this.answer = null;
         } else {
             this.answer = answer;

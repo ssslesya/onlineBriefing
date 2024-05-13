@@ -22,9 +22,9 @@ public class Subject {
     private String title;
 
     @Column(name = "id_teacher", nullable = false)
-    private Integer id_teacher;
+    private Integer idTeacher;
 
     @Column(name = "id_profile", nullable = false)
-    private Integer id_profile;
+    private Integer idProfile;
 
 }

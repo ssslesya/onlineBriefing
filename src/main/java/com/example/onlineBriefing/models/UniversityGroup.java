@@ -19,10 +19,10 @@ public class UniversityGroup {
     private Integer id;
 
     @Column(name = "id_profile", nullable = false)
-    private Integer id_profile;
+    private Integer idProfile;
 
     @Column(name = "year_begin", nullable = false)
-    private Integer year_begin;
+    private Integer yearBegin;
 
     @Column(name = "number", nullable = false)
     private String number;

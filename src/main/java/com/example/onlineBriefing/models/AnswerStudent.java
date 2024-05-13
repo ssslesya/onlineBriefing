@@ -20,10 +20,10 @@ public class AnswerStudent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "id_student", nullable = false)
-    private Integer id_student;
+    private Integer idStudent;
 
     @Column(name = "id_question", nullable = false)
-    private Integer id_question;
+    private Integer idQuestion;
 
     @Column(name = "text")
     private String text;

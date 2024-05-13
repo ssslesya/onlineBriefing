@@ -10,10 +10,10 @@ public class TeacherService {
 
     @Autowired
     private TeacherRepository teacherRepository;
-    public ResponseEntity<?> getTeacherByLogin(String login){
-        if(teacherRepository.findById_login(login) == null){
+    public ResponseEntity<?> getTeacherByLogin(Integer login){
+        if(teacherRepository.findByLogin(login) == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(teacherRepository.findById_login(login)) ;
+        return ResponseEntity.ok(teacherRepository.findByLogin(login)) ;
     }
 }

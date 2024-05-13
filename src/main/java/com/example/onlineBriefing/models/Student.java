@@ -27,8 +27,8 @@ public class Student {
     private String patronymic;
 
     @Column(name = "id_group", nullable = false)
-    private Integer id_group;
+    private Integer idGroup;
 
     @Column(name = "id_login", nullable = false)
-    private Integer id_login;
+    private Integer login;
 }

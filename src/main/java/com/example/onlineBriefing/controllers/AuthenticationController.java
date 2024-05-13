@@ -25,12 +25,13 @@ public class AuthenticationController {
         LoginMoodle loginMoodle = new LoginMoodle(login, status);
         return loginMoodleService.auth(loginMoodle);
     }
-    @PostMapping("/auth")//Здесь мы сюда отправляем LoginMoodle
+    @PostMapping("/auth")//Здесь мы отправляем LoginMoodle
     public ResponseEntity<?> getStudentByLogin(@PathVariable LoginMoodle loginMoodle){
         if (Objects.equals(loginMoodle.getStatus(), "teacher")){
-            return teacherService.getTeacherByLogin(loginMoodle.getLogin());
-        } else if (Objects.equals(loginMoodle.getStatus(), "student")) {
-            return studentService.getStudentByLogin(loginMoodle.getLogin());
+            return teacherService.getTeacherByLogin(loginMoodle.getId());
+        }
+        else if (Objects.equals(loginMoodle.getStatus(), "student")) {
+            return studentService.getStudentByLogin(loginMoodle.getId());
         }
         return ResponseEntity.notFound().build();
     }
