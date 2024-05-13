@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student,Long> {
+public interface StudentRepository extends JpaRepository<Student,Integer> {
     Student findByLogin(Integer idLogin);
     Optional<Student> findById(Integer id);
 }

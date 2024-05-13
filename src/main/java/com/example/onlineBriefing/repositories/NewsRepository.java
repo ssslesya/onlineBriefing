@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface NewsRepository extends JpaRepository<News,Long> {
+public interface NewsRepository extends JpaRepository<News,Integer> {
 
     List<News> findAllByIdProfile(Integer idProfile);
 

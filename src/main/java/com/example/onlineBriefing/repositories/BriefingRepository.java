@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BriefingRepository extends JpaRepository<Briefing,Long> {
+public interface BriefingRepository extends JpaRepository<Briefing,Integer> {
 
     List<Briefing> findAllByIdSubject(Integer idSubject);
 
