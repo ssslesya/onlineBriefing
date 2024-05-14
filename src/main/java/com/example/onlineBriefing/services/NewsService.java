@@ -17,5 +17,9 @@ public class NewsService {
         return newsRepository.findAllByIdProfile(idProfile);
     }
 
+    public List<News> getNewsByTeacherId(Integer idTeacher) {
+        return newsRepository.findByIdTeacherOrderByDateStartDesc(idTeacher);
+    }
+
 
 }

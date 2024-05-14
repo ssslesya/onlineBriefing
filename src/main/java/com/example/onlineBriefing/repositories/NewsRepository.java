@@ -10,5 +10,6 @@ import java.util.List;
 public interface NewsRepository extends JpaRepository<News,Integer> {
 
     List<News> findAllByIdProfile(Integer idProfile);
+    List<News> findByIdTeacherOrderByDateStartDesc(Integer idTeacher);
 
 }

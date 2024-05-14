@@ -24,6 +24,14 @@ public class NewsController {
                 .body(newsService.getAllNewsByIdProfile(id_profile));
     }
 
-
+    @GetMapping(value = "/newsByTeacher/{idTeacher}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<News>> getNewsByTeacherId(@PathVariable Integer idTeacher) {
+        List<News> newsList = newsService.getNewsByTeacherId(idTeacher);
+        if (newsList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(newsList);
+        }
+    }
 
 }
