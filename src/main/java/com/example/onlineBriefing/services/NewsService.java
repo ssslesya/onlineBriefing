@@ -21,5 +21,9 @@ public class NewsService {
         return newsRepository.findByIdTeacherOrderByDateStartDesc(idTeacher);
     }
 
+    public News addNews(News news) {
+        return newsRepository.save(news);
+    }
+
 
 }

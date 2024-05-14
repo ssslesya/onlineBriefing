@@ -34,4 +34,10 @@ public class NewsController {
         }
     }
 
+    @PostMapping("/addNew")
+    public ResponseEntity<News> addNews(@RequestBody News news) {
+        News savedNews = newsService.addNews(news);
+        return ResponseEntity.ok(savedNews);
+    }
+
 }
