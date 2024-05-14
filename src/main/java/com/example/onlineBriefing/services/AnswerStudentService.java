@@ -1,8 +1,10 @@
 package com.example.onlineBriefing.services;
 
 import com.example.onlineBriefing.models.AnswerStudent;
+import com.example.onlineBriefing.models.Plagiat;
 import com.example.onlineBriefing.models.Question;
 import com.example.onlineBriefing.repositories.AnswerStudentRepository;
+import com.example.onlineBriefing.repositories.PlagiatRepository;
 import com.example.onlineBriefing.repositories.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ public class AnswerStudentService {
     private AnswerStudentRepository answerStudentRepository;
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private PlagiatRepository plagiatRepository;
 
     public List<AnswerStudent> addAnswer(List<AnswerStudent> answerStudents) {
         return answerStudentRepository.saveAll(answerStudents);
@@ -44,5 +48,35 @@ public class AnswerStudentService {
             }
         }
         return answerStudentRepository.saveAll(checkedAnswer);
+    }
+
+
+    public String getAnswerDetails(Integer idQuestion, Integer idStudent) {
+        AnswerStudent answerStudent = answerStudentRepository.findByQuestionAndStudent(idQuestion, idStudent);
+        if (answerStudent == null) {
+            throw new RuntimeException("Answer not found for question id: " + idQuestion + " and student id: " + idStudent);
+        }
+
+        String res = "";
+        if(answerStudent.getText()!= null){
+            res += "Ответ: "+answerStudent.getText()+".";
+            if (answerStudent.getAccuracy_percent()!= null){
+                res += " Балл: "+ answerStudent.getAccuracy_percent()+".";
+            }
+            if(getPlagiat(answerStudent)!=null){
+                res += " Проверка на плагиат не пройдена.";
+            }
+        }else res = "Ответ на вопрос не был представлен";
+        return res;
+    }
+
+    public Plagiat getPlagiat(AnswerStudent answerStudent){
+        return plagiatRepository.findByAnswerStudent2(answerStudent.getId());
+    }
+
+    private boolean checkPlagiarism(String text) {
+        // Здесь реализуйте логику проверки на плагиат
+        // В данном примере просто возвращаем false для демонстрации
+        return false;
     }
 }

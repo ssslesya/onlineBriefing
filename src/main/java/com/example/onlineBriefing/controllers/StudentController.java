@@ -1,6 +1,9 @@
 package com.example.onlineBriefing.controllers;
 
+import com.example.onlineBriefing.models.AnswerStudent;
+import com.example.onlineBriefing.models.Plagiat;
 import com.example.onlineBriefing.models.Student;
+import com.example.onlineBriefing.services.AnswerStudentService;
 import com.example.onlineBriefing.services.BriefingService;
 import com.example.onlineBriefing.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ public class StudentController {
     private StudentService studentService;
     @Autowired
     private BriefingService briefingService;
+    @Autowired
+    private AnswerStudentService answerStudentService;
 
     @GetMapping(value = "/getStudent/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Optional<Student>> getStudent(@PathVariable Integer id){
@@ -33,5 +38,19 @@ public class StudentController {
         return ResponseEntity.ok(averageGrade);
     }
 
+    //Получить инфо о ответе студента
+    @PostMapping("/answerDetails")
+    public ResponseEntity<?> getAnswerDetails(@RequestBody Integer idQuestion, @RequestBody Integer idStudent) {
+        String res = answerStudentService.getAnswerDetails(idQuestion, idStudent);
+        return ResponseEntity.ok(res);
+    }
+    @GetMapping("/getPlagiat")
+    public ResponseEntity<?> getPlagiat(@RequestBody AnswerStudent answerStudent) {
+        Plagiat plagiat = answerStudentService.getPlagiat(answerStudent);
+        if (plagiat==null){
+            ResponseEntity.ok("Плагиата нет");
+        }
+        return ResponseEntity.ok(plagiat.getAnswerStudent1());
+    }
 
 }
