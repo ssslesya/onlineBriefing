@@ -18,8 +18,8 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
     @GetMapping("/getTop/{subject}/{group}")//error500
-    public ResponseEntity<?> getTopStudents(@PathVariable Integer idSubject,@PathVariable Integer group){
-        return ResponseEntity.ok(briefingService.getTopStudents(idSubject, group));
+    public ResponseEntity<?> getTopStudents(@PathVariable Integer subject,@PathVariable Integer group){
+        return ResponseEntity.ok(briefingService.getTopStudents(subject, group));
     }
     //Средний балл по вопросам летучки группы
     @GetMapping("/getQuestionCheck/{briefing}/{group}")
