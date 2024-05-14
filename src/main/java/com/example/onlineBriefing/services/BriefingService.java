@@ -1,16 +1,16 @@
 package com.example.onlineBriefing.services;
 
 import com.example.onlineBriefing.models.*;
-import com.example.onlineBriefing.repositories.AnswerStudentRepository;
-import com.example.onlineBriefing.repositories.BriefingRepository;
-import com.example.onlineBriefing.repositories.QuestionRepository;
+import com.example.onlineBriefing.repositories.*;
+import org.apache.catalina.Group;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BriefingService {
@@ -21,6 +21,10 @@ public class BriefingService {
     private AnswerStudentRepository answerStudentRepository;
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private UniversityGroupRepository universityGroupRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
     public List<Briefing> getAllBriefingsByIdSubject(Integer idSubject) {
         return briefingRepository.findAllByIdSubject(idSubject);
@@ -57,6 +61,43 @@ public class BriefingService {
             count += 1;
         }
         return sum/count;
+    }
+    //Получить место в топе и лучший балл
+    public String getTop(Integer idStudent, Integer subject){
+        Student student = studentRepository.findById(idStudent).get();
+        Integer profileId = universityGroupRepository.findById(student.getIdGroup()).get().getIdProfile();
+        List<UniversityGroup> groups = universityGroupRepository.findAllByIdProfile(profileId);
+        List<Student> students = new ArrayList<>();
+        for (UniversityGroup group:
+             groups) {
+            students.addAll(studentRepository.findAllByIdGroup(group.getId()));
+        }
+        Map<Integer, Double> studentsMap = new HashMap<>();
+        for(Student s: students){
+            studentsMap.put(s.getId(), calculateAverageGradeBySubject(s.getId(), subject));
+        }
+        Map<Integer, Double> sortedByScores = studentsMap.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())) // Сортировка по убыванию
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+        int position = getStudentPositionInTop(sortedByScores, idStudent);
+        Double max = sortedByScores.values().iterator().next();
+        return "Ваше место в рейтинге "+position+"Лучший балл в топе: "+max;
+    }
+    private static int getStudentPositionInTop(Map<Integer, Double> sortedScores, Integer idStudent) {
+        int position = 1;
+        for (Map.Entry<Integer, Double> entry : sortedScores.entrySet()) {
+            if (entry.getKey().equals(idStudent)) {
+                return position;
+            }
+            position++;
+        }
+        return -1; // Если студент не найден
     }
 
     public Optional<Briefing> findBriefingById(Integer id) {

@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -31,7 +32,7 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(studentService.findStudentById(id));
     }
-//Средний балл по предмету
+    //Средний балл по предмету
     @GetMapping("/averageGrade/{idStudent}/{subject}")
     public ResponseEntity<Double> getAverageGradeBySubject(@PathVariable Integer idStudent, @PathVariable Integer subject) {
         double averageGrade = briefingService.calculateAverageGradeBySubject(idStudent, subject);
@@ -44,13 +45,18 @@ public class StudentController {
         String res = answerStudentService.getAnswerDetails(idQuestion, idStudent);
         return ResponseEntity.ok(res);
     }
-    @GetMapping("/getPlagiat")
+    @PostMapping("/getPlagiat")
     public ResponseEntity<?> getPlagiat(@RequestBody AnswerStudent answerStudent) {
         Plagiat plagiat = answerStudentService.getPlagiat(answerStudent);
         if (plagiat==null){
             ResponseEntity.ok("Плагиата нет");
         }
         return ResponseEntity.ok(plagiat.getAnswerStudent1());
+    }
+    //Получить рейтинг студента
+    @GetMapping("/getRating/{idStudent}/{subject}")
+    public ResponseEntity<?> getRating(@PathVariable Integer idStudent, @PathVariable Integer idSubject){
+        return ResponseEntity.ok(briefingService.getTop(idStudent, idSubject));
     }
 
 }
