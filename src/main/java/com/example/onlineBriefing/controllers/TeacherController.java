@@ -40,7 +40,7 @@ public class TeacherController {
     }
     //Непроверенные списанные ответы на вопросы препода
     @GetMapping("/getQuestionNoCheck/{teacherId}")
-    public ResponseEntity<?> getQuestionNoCheckAnd(@PathVariable Integer teacherId){
-        return ResponseEntity.ok(teacherService.getAnswerNoMark(teacherId));
+    public ResponseEntity<?> getQuestionNoCheckAndPlagiat(@PathVariable Integer teacherId){
+        return ResponseEntity.ok(teacherService.getAnswerNoMarkAndPlagiat(teacherId));
     }
 }

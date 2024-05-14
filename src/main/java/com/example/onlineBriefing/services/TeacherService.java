@@ -30,26 +30,42 @@ public class TeacherService {
     private ProfileRepository profileRepository;
     @Autowired
     private ProfileBriefingRepository profileBriefingRepository;
-    public Teacher getTeacherByLogin(Integer login){
-        return teacherRepository.findByLogin(login) ;
+    @Autowired
+    private PlagiatRepository plagiatRepository;
+
+    public Teacher getTeacherByLogin(Integer login) {
+        return teacherRepository.findByLogin(login);
     }
+
     //Получить непроверенные летучки учителя
-    public List<AnswerStudent> getAnswerNoMark(Integer teacherId){
+    public List<AnswerStudent> getAnswerNoMark(Integer teacherId) {
         List<Subject> subjects = subjectRepository.findAllByIdTeacher(teacherId);
         List<Integer> groups = new ArrayList<>();
-        for (Subject subject: subjects){
+        for (Subject subject : subjects) {
             groups.add(subject.getIdProfile());
         }
         List<AnswerStudent> res = new ArrayList<>();
         Student student;
-        for(AnswerStudent answerStudent:answerStudentRepository.findAll()){
-            if(answerStudent.getAccuracy_percent()==null){
+        for (AnswerStudent answerStudent : answerStudentRepository.findAll()) {
+            if (answerStudent.getAccuracy_percent() == null) {
                 student = studentRepository
                         .findById(answerStudent.getIdStudent())
                         .get();
                 if (groups.contains(student.getIdGroup())) {
                     res.add(answerStudent);
                 }
+            }
+        }
+        return res;
+    }
+
+    public List<Plagiat> getAnswerNoMarkAndPlagiat(Integer teacherId) {
+        List<AnswerStudent> answerStudents = getAnswerNoMark(teacherId);
+        List<Plagiat> res = new ArrayList<>();
+        for (AnswerStudent answerStudent : answerStudents) {
+            Plagiat plagiat = plagiatRepository.findByAnswerStudent2(answerStudent.getId());
+            if (plagiat != null) {
+                res.add(plagiat);
             }
         }
         return res;
