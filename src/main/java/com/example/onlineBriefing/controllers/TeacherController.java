@@ -18,4 +18,9 @@ public class TeacherController {
     public ResponseEntity<?> getTopStudents(@PathVariable Integer idSubject,@PathVariable Integer group){
         return ResponseEntity.ok(briefingService.getTopStudents(idSubject, group));
     }
+    //Средний балл по вопросам летучки группы
+    @GetMapping("/getQuestionCheck/{briefing}/{group}")
+    public ResponseEntity<?> getQuestionCheck(@PathVariable Integer briefing,@PathVariable Integer group){
+        return ResponseEntity.ok(briefingService.getQuestionAvgGrade(briefing,group));
+    }
 }

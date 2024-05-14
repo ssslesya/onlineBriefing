@@ -27,6 +27,7 @@ public class BriefingService {
     private StudentRepository studentRepository;
     @Autowired
     private SubjectRepository subjectRepository;
+
     public List<Briefing> getAllBriefingsByIdSubject(Integer idSubject) {
         return briefingRepository.findAllByIdSubject(idSubject);
     }
@@ -37,7 +38,7 @@ public class BriefingService {
         BigDecimal sum = BigDecimal.ZERO; // Используем константу BigDecimal.ZERO для инициализации суммы
         int count = 0;
         for (Question question : questions) {
-            AnswerStudent answerStudent = answerStudentRepository.findByQuestion(question.getId());
+            AnswerStudent answerStudent = answerStudentRepository.findByQuestionAndIdStudent(question.getId(), idStudent);
             if (answerStudent != null && answerStudent.getAccuracy_percent() != null) {
                 sum = sum.add(answerStudent.getAccuracy_percent()); // Используем метод add() для добавления BigDecimal к сумме
             }
@@ -49,6 +50,7 @@ public class BriefingService {
         }
         return average.doubleValue();
     }
+
     //Средний балл по предмету
     public double calculateAverageGradeBySubject(Integer idStudent, Integer subject) {
         List<Briefing> briefings = getAllBriefingsByIdSubject(subject);
@@ -61,9 +63,36 @@ public class BriefingService {
             sum += estimate;
             count += 1;
         }
-        return sum/count;
+        return sum / count;
     }
-    public List<Double>  getAllScores(Integer idStudent, Integer subject){
+
+    //Средний балл по вопросам летучки группы
+    public Map<Question, Double> getQuestionAvgGrade(Integer briefing, Integer group) {
+        List<Question> questions = questionRepository.findAllByBriefing(briefing);
+        BigDecimal sum;
+        int count;
+        List<AnswerStudent> answerStudents;
+        Map<Question, Double> res = new HashMap<>();
+        BigDecimal average = BigDecimal.ZERO;
+        for (Question question : questions) {
+            count = 0;
+            sum = BigDecimal.ZERO;
+            answerStudents = answerStudentRepository.findByAllQuestion(question.getId());
+            for (AnswerStudent answerStudent : answerStudents) {
+                if (Objects.equals(studentRepository.findById(answerStudent.getIdStudent()).get().getIdGroup(), group)) {
+                    count++;
+                    sum = sum.add(answerStudent.getAccuracy_percent());
+                }
+            }
+            if (count != 0) {
+                average = sum.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP); // Вычисляем среднее значение с точностью до двух знаков после запятой
+            }
+            res.put(question,average.doubleValue());
+        }
+        return res;
+    }
+
+    public List<Double> getAllScores(Integer idStudent, Integer subject) {
         List<Briefing> briefings = getAllBriefingsByIdSubject(subject);
         List<Double> scores = new ArrayList<>();
         for (Briefing briefing :
@@ -72,23 +101,36 @@ public class BriefingService {
         }
         return scores;
     }
+
     //Получить место в топе и лучший балл
-    public String getTopStudent(Integer idStudent, Integer subject){
+    public String getTopStudent(Integer idStudent, Integer subject) {
         Map<Integer, Double> top = getTop(subject);
         int position = getStudentPositionInTop(top, idStudent);
         Double max = top.values().iterator().next();
-        return "Ваше место в рейтинге "+position+"Лучший балл в топе: "+max;
+        return "Ваше место в рейтинге " + position + "Лучший балл в топе: " + max;
     }
-    public Map<Integer, Double>  getTop(Integer subject){
+
+    private static int getStudentPositionInTop(Map<Integer, Double> sortedScores, Integer idStudent) {
+        int position = 1;
+        for (Map.Entry<Integer, Double> entry : sortedScores.entrySet()) {
+            if (entry.getKey().equals(idStudent)) {
+                return position;
+            }
+            position++;
+        }
+        return -1; // Если студент не найден
+    }
+
+    public Map<Integer, Double> getTop(Integer subject) {
         Integer profileId = subjectRepository.findById(subject).get().getId();
         List<UniversityGroup> groups = universityGroupRepository.findAllByIdProfile(profileId);
         List<Student> students = new ArrayList<>();
-        for (UniversityGroup group:
+        for (UniversityGroup group :
                 groups) {
             students.addAll(studentRepository.findAllByIdGroup(group.getId()));
         }
         Map<Integer, Double> studentsMap = new HashMap<>();
-        for(Student s: students){
+        for (Student s : students) {
             studentsMap.put(s.getId(), calculateAverageGradeBySubject(s.getId(), subject));
         }
         return studentsMap.entrySet()
@@ -101,7 +143,8 @@ public class BriefingService {
                         LinkedHashMap::new
                 ));
     }
-    public Map<Student, Double>  getTopStudents(Integer subject, Integer group){
+
+    public Map<Student, Double> getTopStudents(Integer subject, Integer group) {
 
         Map<Integer, Double> top = getTop(subject);
         Map<Student, Double> studentTop = new LinkedHashMap<>(); // Используем LinkedHashMap для сохранения порядка
@@ -111,23 +154,14 @@ public class BriefingService {
             Double averageGrade = entry.getValue();
             Student student = studentRepository.findById(studentId).orElse(null); // Извлекаем объект Student по ID
             if (student != null) {
-                if (Objects.equals(student.getIdGroup(), group)){
+                if (Objects.equals(student.getIdGroup(), group)) {
                     studentTop.put(student, averageGrade); // Добавляем в карту
                 }
             }
         }
         return studentTop;
     }
-    private static int getStudentPositionInTop(Map<Integer, Double> sortedScores, Integer idStudent) {
-        int position = 1;
-        for (Map.Entry<Integer, Double> entry : sortedScores.entrySet()) {
-            if (entry.getKey().equals(idStudent)) {
-                return position;
-            }
-            position++;
-        }
-        return -1; // Если студент не найден
-    }
+
 
     public Optional<Briefing> findBriefingById(Integer id) {
         return briefingRepository.findById(id);
