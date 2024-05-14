@@ -144,7 +144,7 @@ public class BriefingService {
         Map<Integer, Double> top = getTop(subject);
         int position = getStudentPositionInTop(top, idStudent);
         Double max = top.values().iterator().next();
-        return "Ваше место в рейтинге " + position + "Лучший балл в топе: " + max;
+        return "Ваше место в рейтинге " + position + " Лучший балл в топе: " + max;
     }
 
     private static int getStudentPositionInTop(Map<Integer, Double> sortedScores, Integer idStudent) {

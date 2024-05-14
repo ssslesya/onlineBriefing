@@ -54,11 +54,11 @@ public class StudentController {
         return ResponseEntity.ok(plagiat.getAnswerStudent1());
     }
     //Получить рейтинг студента
-    @GetMapping("/getRating/{idStudent}/{subject}")//error500
-    public ResponseEntity<?> getRating(@PathVariable Integer idStudent, @PathVariable Integer idSubject){
-        return ResponseEntity.ok(briefingService.getTopStudent(idStudent, idSubject));
+    @GetMapping("/getRating/{idStudent}/{subject}")
+    public ResponseEntity<?> getRating(@PathVariable Integer idStudent, @PathVariable Integer subject){
+        return ResponseEntity.ok(briefingService.getTopStudent(idStudent, subject));
     }
-    //Получить список баллов по всем летучкам
+    //Получить список баллов по всем летучкам предмета
     @GetMapping("/getScores/{idStudent}/{subject}")
     public List<Double> getScores(@PathVariable Integer idStudent, @PathVariable Integer subject){
         return briefingService. getAllScores(idStudent, subject);
