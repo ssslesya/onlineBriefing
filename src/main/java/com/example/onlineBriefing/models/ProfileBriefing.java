@@ -13,7 +13,11 @@ import lombok.*;
 @Table(name = "profilebriefing")
 public class ProfileBriefing {
 
-    @Id //??? вроде нужно просто иначе ошибка что каждая ентити должна иметь свой ид
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id; // Уникальный идентификатор для ProfileBriefing
+
     @Column(name = "id_profile", nullable = false)
     private Integer idProfile;
 

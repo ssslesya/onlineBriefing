@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface UniversityGroupRepository extends JpaRepository<UniversityGroup,Integer> {
     Optional<UniversityGroup> findByIdProfileAndYearBeginAndNumber(Integer idProfile, Integer yearBegin, String number);
-
     List<UniversityGroup> findAllByIdProfile(Integer profileId);
+    List<UniversityGroup> findByIdProfileIn(List<Integer> profileIds);
+
 }
