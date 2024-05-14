@@ -77,7 +77,7 @@ public class BriefingService {
         for (Question question : questions) {
             count = 0;
             sum = BigDecimal.ZERO;
-            answerStudents = answerStudentRepository.findByAllQuestion(question.getId());
+            answerStudents = answerStudentRepository.findAllByQuestion(question.getId());
             for (AnswerStudent answerStudent : answerStudents) {
                 if (Objects.equals(studentRepository.findById(answerStudent.getIdStudent()).get().getIdGroup(), group)) {
                     count++;
