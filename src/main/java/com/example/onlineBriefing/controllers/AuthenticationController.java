@@ -17,11 +17,11 @@ import java.util.Objects;
 @RequestMapping("/briefing")
 public class AuthenticationController {
     @Autowired
-    LoginMoodleService loginMoodleService;
+    private LoginMoodleService loginMoodleService;
     @Autowired
-    StudentService studentService;
+    private StudentService studentService;
     @Autowired
-    TeacherService teacherService;
+    private TeacherService teacherService;
     @PostMapping("/login") //Здесь выводится LoginMoodle
     public ResponseEntity<?> logClient(@RequestBody String login, String status){
         LoginMoodle loginMoodle = loginMoodleService.auth(new LoginMoodle(login, status));

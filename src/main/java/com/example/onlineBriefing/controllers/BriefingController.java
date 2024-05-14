@@ -21,7 +21,7 @@ public class BriefingController {
     @Autowired
     private BriefingService briefingService;
     @Autowired
-    AnswerStudentService answerStudentService;
+    private AnswerStudentService answerStudentService;
 
 
     @GetMapping(value = "/getBriefings/{id_subject}", produces = MediaType.APPLICATION_JSON_VALUE)
