@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AnswerStudentService {
@@ -74,5 +72,30 @@ public class AnswerStudentService {
         return plagiatRepository.findByAnswerStudent2(answerStudent.getId());
     }
 
+    public Map<Integer, BigDecimal> updateAccuracyPercentAndGetAll(Integer id, BigDecimal accuracyPercent) {
+        Optional<AnswerStudent> answerStudentOptional = answerStudentRepository.findById(id);
+        if (answerStudentOptional.isPresent()) {
+            AnswerStudent answerStudent = answerStudentOptional.get();
+            answerStudent.setAccuracy_percent(accuracyPercent);
+            answerStudentRepository.save(answerStudent);
+        }
+        return answerStudentRepository
+                .findAll()
+                .stream()
+                .collect(Collectors.toMap(
+                        AnswerStudent::getId,
+                        AnswerStudent::getAccuracy_percent));
+    }
+
+    public Optional<AnswerStudent> updateAccuracyPercent(Integer id, BigDecimal accuracyPercent) {
+        Optional<AnswerStudent> answerStudentOptional = answerStudentRepository.findById(id);
+        if (answerStudentOptional.isPresent()) {
+            AnswerStudent answerStudent = answerStudentOptional.get();
+            answerStudent.setAccuracy_percent(accuracyPercent);
+            answerStudentRepository.save(answerStudent);
+            return Optional.of(answerStudent);
+        }
+        return Optional.empty();
+    }
 
 }
