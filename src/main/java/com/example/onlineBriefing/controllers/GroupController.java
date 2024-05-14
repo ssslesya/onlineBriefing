@@ -1,11 +1,13 @@
 package com.example.onlineBriefing.controllers;
 
+import com.example.onlineBriefing.models.Profile;
 import com.example.onlineBriefing.models.UniversityGroup;
 import com.example.onlineBriefing.services.UniversityGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,6 +30,12 @@ public class GroupController {
         return group
                 .map(universityGroup -> ResponseEntity.ok(universityGroup.getId()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/getAllGroups")
+    public ResponseEntity<List<UniversityGroup>> getAllGroups() {
+        List<UniversityGroup> groups = universityGroupService.getAllGroups();
+        return ResponseEntity.ok(groups);
     }
 
 }
