@@ -6,6 +6,7 @@ import com.example.onlineBriefing.models.Briefing;
 import com.example.onlineBriefing.models.Subject;
 import com.example.onlineBriefing.services.AnswerStudentService;
 import com.example.onlineBriefing.services.BriefingService;
+import com.example.onlineBriefing.services.PlagiatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +25,8 @@ public class BriefingController {
     private BriefingService briefingService;
     @Autowired
     private AnswerStudentService answerStudentService;
+    @Autowired
+    private PlagiatService plagiatService;
 
 
     @GetMapping(value = "/getBriefings/{id_subject}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,6 +39,7 @@ public class BriefingController {
     public ResponseEntity<?> addAnswerStudent(@RequestBody List<AnswerStudent> answerStudents) {
         List<AnswerStudent> addedAnswerStudents = answerStudentService.addAnswer(answerStudents);//Добавляем в БД
         System.out.println(answerStudentService.checkAnswer(addedAnswerStudents)); //Ответы на вопросы с автоматической проверкой сразу проверяются
+        plagiatService.plagiatCheckAll(answerStudents);
         return ResponseEntity.ok(addedAnswerStudents);
     }
 

@@ -22,4 +22,9 @@ public class Plagiat {
 
     @Column(name = "id_answer_student2", nullable = false)
     private Integer answerStudent2;
+
+    public Plagiat(Integer answerStudent1, Integer answerStudent2) {
+        this.answerStudent1 = answerStudent1;
+        this.answerStudent2 = answerStudent2;
+    }
 }
