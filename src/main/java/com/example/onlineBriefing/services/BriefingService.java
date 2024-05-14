@@ -62,6 +62,15 @@ public class BriefingService {
         }
         return sum/count;
     }
+    public List<Double>  getAllScores(Integer idStudent, Integer subject){
+        List<Briefing> briefings = getAllBriefingsByIdSubject(subject);
+        List<Double> scores = new ArrayList<>();
+        for (Briefing briefing :
+                briefings) {
+            scores.add(getEstimationBriefingStudent(briefing.getId(), idStudent));
+        }
+        return scores;
+    }
     //Получить место в топе и лучший балл
     public String getTop(Integer idStudent, Integer subject){
         Student student = studentRepository.findById(idStudent).get();

@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -58,5 +58,12 @@ public class StudentController {
     public ResponseEntity<?> getRating(@PathVariable Integer idStudent, @PathVariable Integer idSubject){
         return ResponseEntity.ok(briefingService.getTop(idStudent, idSubject));
     }
+    //Получить список баллов по летучкам
+    @GetMapping("/getScores/{idStudent}/{subject}")
+    public List<Double> getScores(@PathVariable Integer idStudent, @PathVariable Integer subject){
+        return briefingService.getAllScores(idStudent, subject);
+    }
+
+
 
 }
