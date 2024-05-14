@@ -22,9 +22,11 @@ public class AuthenticationController {
     private StudentService studentService;
     @Autowired
     private TeacherService teacherService;
-    @PostMapping("/login") //Здесь выводится LoginMoodle
-    public ResponseEntity<?> logClient(@RequestBody String login, String status){
+    @PostMapping("/login/{status}") //Здесь выводится LoginMoodle
+    public ResponseEntity<?> logClient(@PathVariable String status, @RequestBody String login ){
+        System.out.println(login+status);
         LoginMoodle loginMoodle = loginMoodleService.auth(new LoginMoodle(login, status));
+        System.out.println(loginMoodle);
         if(loginMoodle == null){
             return ResponseEntity.notFound().build();
         }
