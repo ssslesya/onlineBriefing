@@ -61,9 +61,7 @@ public class StudentController {
     //Получить список баллов по всем летучкам
     @GetMapping("/getScores/{idStudent}/{subject}")
     public List<Double> getScores(@PathVariable Integer idStudent, @PathVariable Integer subject){
-        return briefingService.getAllScores(idStudent, subject);
+        return briefingService. getAllScores(idStudent, subject);
     }
-
-
 
 }

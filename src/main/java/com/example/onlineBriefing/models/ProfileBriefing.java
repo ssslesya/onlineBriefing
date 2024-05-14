@@ -19,9 +19,9 @@ public class ProfileBriefing {
     private Integer id; // Уникальный идентификатор для ProfileBriefing
 
     @Column(name = "id_profile", nullable = false)
-    private Integer idProfile;
+    private Integer profile;
 
     @Column(name = "id_briefing", nullable = false)
-    private Integer idBriefing;
+    private Integer briefing;
 
 }

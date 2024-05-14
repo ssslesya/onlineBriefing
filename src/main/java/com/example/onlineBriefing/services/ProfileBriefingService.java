@@ -25,10 +25,10 @@ public class ProfileBriefingService {
     }
 
     public List<UniversityGroup> findGroupsByBriefingId(Integer briefingId) {
-        List<ProfileBriefing> profileBriefings = profileBriefingRepository.findByIdBriefing(briefingId);
+        List<ProfileBriefing> profileBriefings = profileBriefingRepository.findAllByBriefing(briefingId);
         List<Integer> profileIds = profileBriefings
                 .stream()
-                .map(ProfileBriefing::getIdProfile)
+                .map(ProfileBriefing::getProfile)
                 .collect(Collectors.toList());
         return universityGroupRepository.findByIdProfileIn(profileIds);
     }

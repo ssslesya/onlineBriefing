@@ -27,6 +27,10 @@ public class BriefingService {
     private StudentRepository studentRepository;
     @Autowired
     private SubjectRepository subjectRepository;
+    @Autowired
+    private ProfileRepository profileRepository;
+    @Autowired
+    private ProfileBriefingRepository profileBriefingRepository;
 
     public List<Briefing> getAllBriefingsByIdSubject(Integer idSubject) {
         return briefingRepository.findAllByIdSubject(idSubject);
@@ -87,19 +91,52 @@ public class BriefingService {
             if (count != 0) {
                 average = sum.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP); // Вычисляем среднее значение с точностью до двух знаков после запятой
             }
-            res.put(question,average.doubleValue());
+            res.put(question, average.doubleValue());
         }
         return res;
     }
-
-    public List<Double> getAllScores(Integer idStudent, Integer subject) {
-        List<Briefing> briefings = getAllBriefingsByIdSubject(subject);
-        List<Double> scores = new ArrayList<>();
-        for (Briefing briefing :
-                briefings) {
-            scores.add(getEstimationBriefingStudent(briefing.getId(), idStudent));
+    //Средний балл группы по летучке
+    public Double getBriefingAvgGrade(Integer briefing, Integer group) {
+        List<Question> questions = questionRepository.findAllByBriefing(briefing);
+        BigDecimal sum= BigDecimal.ZERO;
+        int count = 0;
+        List<AnswerStudent> answerStudents;
+        BigDecimal average = BigDecimal.ZERO;
+        for (Question question : questions) {
+            answerStudents = answerStudentRepository.findAllByQuestion(question.getId());
+            for (AnswerStudent answerStudent : answerStudents) {
+                if (Objects.equals(studentRepository.findById(answerStudent.getIdStudent()).get().getIdGroup(), group)) {
+                    count++;
+                    sum = sum.add(answerStudent.getAccuracy_percent());
+                }
+            }
         }
-        return scores;
+        if (count != 0) {
+            average = sum.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP); // Вычисляем среднее значение с точностью до двух знаков после запятой
+        }
+        return average.doubleValue();
+    }
+    //Средний балл по летучкам среди всех групп
+    public Map<Briefing, Double> getQuestionAvgGrade(Integer subject) {
+        List<Briefing> briefings = getAllBriefingsByIdSubject(subject);
+        List<UniversityGroup> universityGroups = new ArrayList<>();
+        Map<Briefing, Double> res = new HashMap<>();
+        int count;
+        Double sum;
+        for (Briefing briefing : briefings) {
+            Integer profile_id = profileBriefingRepository
+                    .findByBriefing(briefing.getId())
+                    .getProfile();
+            universityGroups = universityGroupRepository.findAllByIdProfile(profile_id);
+            count=0;
+            sum=0.0;
+            for (UniversityGroup universityGroup: universityGroups){
+                sum+=getBriefingAvgGrade(briefing.getId(), universityGroup.getId());
+                count++;
+            }
+            res.put(briefing, sum/count);
+        }
+        return res;
     }
 
     //Получить место в топе и лучший балл
@@ -120,7 +157,7 @@ public class BriefingService {
         }
         return -1; // Если студент не найден
     }
-
+    //Топ студентов по id
     public Map<Integer, Double> getTop(Integer subject) {
         Integer profileId = subjectRepository.findById(subject).get().getId();
         List<UniversityGroup> groups = universityGroupRepository.findAllByIdProfile(profileId);
@@ -143,7 +180,7 @@ public class BriefingService {
                         LinkedHashMap::new
                 ));
     }
-
+    //Топ студентов
     public Map<Student, Double> getTopStudents(Integer subject, Integer group) {
 
         Map<Integer, Double> top = getTop(subject);
@@ -162,7 +199,15 @@ public class BriefingService {
         return studentTop;
     }
 
-
+    public List<Double> getAllScores(Integer idStudent, Integer subject) {
+        List<Briefing> briefings = getAllBriefingsByIdSubject(subject);
+        List<Double> scores = new ArrayList<>();
+        for (Briefing briefing :
+                briefings) {
+            scores.add(getEstimationBriefingStudent(briefing.getId(), idStudent));
+        }
+        return scores;
+    }
     public Optional<Briefing> findBriefingById(Integer id) {
         return briefingRepository.findById(id);
     }

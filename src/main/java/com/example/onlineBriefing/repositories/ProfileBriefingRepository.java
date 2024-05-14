@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ProfileBriefingRepository extends JpaRepository<ProfileBriefing,Integer> {
-    List<ProfileBriefing> findByIdBriefing(Integer idBriefing);
+    ProfileBriefing findByBriefing(Integer briefing);
+
+    List<ProfileBriefing> findAllByBriefing(Integer briefingId);
 }
