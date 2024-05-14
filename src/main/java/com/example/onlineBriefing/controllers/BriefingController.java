@@ -3,6 +3,7 @@ package com.example.onlineBriefing.controllers;
 import com.example.onlineBriefing.exceptions.BriefingNotFoundException;
 import com.example.onlineBriefing.models.AnswerStudent;
 import com.example.onlineBriefing.models.Briefing;
+import com.example.onlineBriefing.models.Subject;
 import com.example.onlineBriefing.services.AnswerStudentService;
 import com.example.onlineBriefing.services.BriefingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -63,6 +65,12 @@ public class BriefingController {
     public ResponseEntity<Integer> addBriefing(@RequestBody Briefing briefing) {
         Briefing savedBriefing = briefingService.addBriefing(briefing);
         return ResponseEntity.ok(savedBriefing.getId());
+    }
+
+    @GetMapping(value = "/getBriefing/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Optional<Briefing>> getBriefing(@PathVariable Integer id){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(briefingService.findBriefingById(id));
     }
 
 }
