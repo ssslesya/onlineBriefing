@@ -32,7 +32,7 @@ public class Briefing {
     @Column(name = "duration")
     private String duration;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private String status;//ENUM:   OPEN, CLOSE
 
     public Briefing(Integer idSubject, Integer number, String title, String duration, String status) {

@@ -20,7 +20,7 @@ public class ProfileBriefingController {
         this.profileBriefingService = profileBriefingService;
     }
 
-    @GetMapping("/groupsByBriefing/{idBriefing}")//я хз как эту тестить
+    @GetMapping("/groupsByBriefing/{idBriefing}")
     public ResponseEntity<List<UniversityGroup>> getGroupsByBriefingId(@PathVariable Integer idBriefing) {
         List<UniversityGroup> groups = profileBriefingService.findGroupsByBriefingId(idBriefing);
         if (groups.isEmpty()) {

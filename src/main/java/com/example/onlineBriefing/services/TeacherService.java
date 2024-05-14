@@ -32,9 +32,15 @@ public class TeacherService {
     private ProfileBriefingRepository profileBriefingRepository;
     @Autowired
     private PlagiatRepository plagiatRepository;
+    @Autowired
+    private LoginMoodleRepository loginMoodleRepository;
 
-    public Teacher getTeacherByLogin(Integer login) {
-        return teacherRepository.findByLogin(login);
+    public Teacher getTeacherByLogin(LoginMoodle login) {
+        Integer loginId = loginMoodleRepository.findByLogin(login.getLogin()).getId();
+        if (loginId != null) {
+            return teacherRepository.findByLogin(loginId);
+        }
+        return null;
     }
 
     //Получить непроверенные летучки учителя

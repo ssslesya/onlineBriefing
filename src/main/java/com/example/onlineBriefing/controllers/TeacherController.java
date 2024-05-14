@@ -34,12 +34,12 @@ public class TeacherController {
         return ResponseEntity.ok(briefingService.getQuestionAvgGrade(subjectId));
     }
     //Непроверенные ответы на вопросы препода
-    @GetMapping("/getQuestionNoCheck/{teacherId}")//ну пока что тут пустой массив на выходе
+    @GetMapping("/getQuestionNoCheck/{teacherId}")
     public ResponseEntity<?> getQuestionNoCheck(@PathVariable Integer teacherId){
         return ResponseEntity.ok(teacherService.getAnswerNoMark(teacherId));
     }
     //Непроверенные списанные ответы на вопросы препода
-    @GetMapping("/getQuestionNoCheckAndPlagiat/{teacherId}")//ну тут тоже пока пустой массив но это норм мб
+    @GetMapping("/getQuestionNoCheckAndPlagiat/{teacherId}")
     public ResponseEntity<?> getQuestionNoCheckAndPlagiat(@PathVariable Integer teacherId){
         return ResponseEntity.ok(teacherService.getAnswerNoMarkAndPlagiat(teacherId));
     }

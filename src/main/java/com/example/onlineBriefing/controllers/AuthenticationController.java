@@ -24,25 +24,23 @@ public class AuthenticationController {
     private TeacherService teacherService;
     @PostMapping("/login/{status}") //Здесь выводится LoginMoodle
     public ResponseEntity<?> logClient(@PathVariable String status, @RequestBody String login ){
-        System.out.println(login+status);
         LoginMoodle loginMoodle = loginMoodleService.auth(new LoginMoodle(login, status));
-        System.out.println(loginMoodle);
         if(loginMoodle == null){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(loginMoodle);
     }
-    @PostMapping("/auth")//Здесь мы отправляем LoginMoodle Тоже Постман и постгрес ниче не выводят
+    @PostMapping("/auth")//Здесь мы отправляем LoginMoodle
     public ResponseEntity<?> getStudentByLogin(@RequestBody LoginMoodle loginMoodle){
         if (Objects.equals(loginMoodle.getStatus(), "teacher")){
-            Teacher teacher = teacherService.getTeacherByLogin(loginMoodle.getId());
+            Teacher teacher = teacherService.getTeacherByLogin(loginMoodle);
             if(teacher == null){
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(teacher) ;
         }
         else if (Objects.equals(loginMoodle.getStatus(), "student")) {
-            Student student = studentService.getStudentByLogin(loginMoodle.getId());
+            Student student = studentService.getStudentByLogin(loginMoodle);
             if(student == null){
                 return ResponseEntity.notFound().build();
             }

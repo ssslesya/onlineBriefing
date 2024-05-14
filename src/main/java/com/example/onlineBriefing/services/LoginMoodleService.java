@@ -13,7 +13,6 @@ public class LoginMoodleService {
     @Autowired
     private LoginMoodleRepository loginMoodleRepository;
     public LoginMoodle auth(LoginMoodle loginMoodle){
-        System.out.println(loginMoodle);
         return loginMoodleRepository.findByLogin(loginMoodle.getLogin());
     }
 }

@@ -5,6 +5,7 @@ import lombok.*;
 
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -29,8 +30,7 @@ public class Question {
     private String answer;
 
     @Builder(toBuilder = true)
-    public Question(Integer id, Integer briefing, String text, String typeVerification, String answer) {
-        this.id = id;
+    public Question(Integer briefing, String text, String typeVerification, String answer) {
         this.briefing = briefing;
         this.text = text;
         this.typeVerification = typeVerification;
