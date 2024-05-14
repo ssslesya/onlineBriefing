@@ -35,7 +35,7 @@ public class BriefingController {
                 .body(briefingService.getAllBriefingsByIdSubject(id_subject));
     }
 
-    @PostMapping("/addAnswer")//Добавляем ответы студента
+    @PostMapping("/addAnswer")//Добавляем ответы стуД; ТУТ ДОБАВЛЯЕТ НО ОШИБКА 500 А ПРОЕКТ НЕ ЛЕГ КСТ
     public ResponseEntity<?> addAnswerStudent(@RequestBody List<AnswerStudent> answerStudents) {
         List<AnswerStudent> addedAnswerStudents = answerStudentService.addAnswer(answerStudents);//Добавляем в БД
         System.out.println(answerStudentService.checkAnswer(addedAnswerStudents)); //Ответы на вопросы с автоматической проверкой сразу проверяются
@@ -43,7 +43,7 @@ public class BriefingController {
         return ResponseEntity.ok(addedAnswerStudents);
     }
 
-    @PutMapping("editStatus/{id}")
+    @PutMapping("/editStatus/{id}")//енам все портит
     public Briefing editStatus(@RequestBody String status, @PathVariable Integer id){
         return briefingService.findBriefingById(id)
                 .map(br -> {
@@ -52,7 +52,7 @@ public class BriefingController {
                 }).orElseThrow(() -> new BriefingNotFoundException(id));
     }
 
-    @PutMapping("editStatusInBriefings/{id}")
+    @PutMapping("/editStatusInBriefings/{id}")//енам все портит
     public ResponseEntity<Briefing> editStatusInBriefing(@RequestBody String status, @PathVariable Integer id) {
         List<Briefing> briefings = briefingService.findAllBriefings();
         Briefing briefingToUpdate = briefings.stream()

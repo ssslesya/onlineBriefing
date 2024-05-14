@@ -29,7 +29,7 @@ public class Briefing {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "duration", columnDefinition = "INTERVAL")
+    @Column(name = "duration")
     private String duration;
 
     @Column(name = "status")

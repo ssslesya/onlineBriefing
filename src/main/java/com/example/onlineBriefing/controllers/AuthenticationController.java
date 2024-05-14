@@ -32,8 +32,8 @@ public class AuthenticationController {
         }
         return ResponseEntity.ok(loginMoodle);
     }
-    @PostMapping("/auth")//Здесь мы отправляем LoginMoodle
-    public ResponseEntity<?> getStudentByLogin(@PathVariable LoginMoodle loginMoodle){
+    @PostMapping("/auth")//Здесь мы отправляем LoginMoodle Тоже Постман и постгрес ниче не выводят
+    public ResponseEntity<?> getStudentByLogin(@RequestBody LoginMoodle loginMoodle){
         if (Objects.equals(loginMoodle.getStatus(), "teacher")){
             Teacher teacher = teacherService.getTeacherByLogin(loginMoodle.getId());
             if(teacher == null){
