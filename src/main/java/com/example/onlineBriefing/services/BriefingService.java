@@ -25,7 +25,8 @@ public class BriefingService {
     private UniversityGroupRepository universityGroupRepository;
     @Autowired
     private StudentRepository studentRepository;
-
+    @Autowired
+    private SubjectRepository subjectRepository;
     public List<Briefing> getAllBriefingsByIdSubject(Integer idSubject) {
         return briefingRepository.findAllByIdSubject(idSubject);
     }
@@ -72,20 +73,25 @@ public class BriefingService {
         return scores;
     }
     //Получить место в топе и лучший балл
-    public String getTop(Integer idStudent, Integer subject){
-        Student student = studentRepository.findById(idStudent).get();
-        Integer profileId = universityGroupRepository.findById(student.getIdGroup()).get().getIdProfile();
+    public String getTopStudent(Integer idStudent, Integer subject){
+        Map<Integer, Double> top = getTop(subject);
+        int position = getStudentPositionInTop(top, idStudent);
+        Double max = top.values().iterator().next();
+        return "Ваше место в рейтинге "+position+"Лучший балл в топе: "+max;
+    }
+    public Map<Integer, Double>  getTop(Integer subject){
+        Integer profileId = subjectRepository.findById(subject).get().getId();
         List<UniversityGroup> groups = universityGroupRepository.findAllByIdProfile(profileId);
         List<Student> students = new ArrayList<>();
         for (UniversityGroup group:
-             groups) {
+                groups) {
             students.addAll(studentRepository.findAllByIdGroup(group.getId()));
         }
         Map<Integer, Double> studentsMap = new HashMap<>();
         for(Student s: students){
             studentsMap.put(s.getId(), calculateAverageGradeBySubject(s.getId(), subject));
         }
-        Map<Integer, Double> sortedByScores = studentsMap.entrySet()
+        return studentsMap.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())) // Сортировка по убыванию
                 .collect(Collectors.toMap(
@@ -94,9 +100,23 @@ public class BriefingService {
                         (e1, e2) -> e1,
                         LinkedHashMap::new
                 ));
-        int position = getStudentPositionInTop(sortedByScores, idStudent);
-        Double max = sortedByScores.values().iterator().next();
-        return "Ваше место в рейтинге "+position+"Лучший балл в топе: "+max;
+    }
+    public Map<Student, Double>  getTopStudents(Integer subject, Integer group){
+
+        Map<Integer, Double> top = getTop(subject);
+        Map<Student, Double> studentTop = new LinkedHashMap<>(); // Используем LinkedHashMap для сохранения порядка
+
+        for (Map.Entry<Integer, Double> entry : top.entrySet()) {
+            Integer studentId = entry.getKey();
+            Double averageGrade = entry.getValue();
+            Student student = studentRepository.findById(studentId).orElse(null); // Извлекаем объект Student по ID
+            if (student != null) {
+                if (Objects.equals(student.getIdGroup(), group)){
+                    studentTop.put(student, averageGrade); // Добавляем в карту
+                }
+            }
+        }
+        return studentTop;
     }
     private static int getStudentPositionInTop(Map<Integer, Double> sortedScores, Integer idStudent) {
         int position = 1;

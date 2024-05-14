@@ -56,9 +56,9 @@ public class StudentController {
     //Получить рейтинг студента
     @GetMapping("/getRating/{idStudent}/{subject}")
     public ResponseEntity<?> getRating(@PathVariable Integer idStudent, @PathVariable Integer idSubject){
-        return ResponseEntity.ok(briefingService.getTop(idStudent, idSubject));
+        return ResponseEntity.ok(briefingService.getTopStudent(idStudent, idSubject));
     }
-    //Получить список баллов по летучкам
+    //Получить список баллов по всем летучкам
     @GetMapping("/getScores/{idStudent}/{subject}")
     public List<Double> getScores(@PathVariable Integer idStudent, @PathVariable Integer subject){
         return briefingService.getAllScores(idStudent, subject);
