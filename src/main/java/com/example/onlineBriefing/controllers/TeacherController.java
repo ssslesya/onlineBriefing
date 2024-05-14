@@ -2,6 +2,7 @@ package com.example.onlineBriefing.controllers;
 
 import com.example.onlineBriefing.services.AnswerStudentService;
 import com.example.onlineBriefing.services.BriefingService;
+import com.example.onlineBriefing.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ public class TeacherController {
     private BriefingService briefingService;
     @Autowired
     private AnswerStudentService answerStudentService;
+    @Autowired
+    private TeacherService teacherService;
     @GetMapping("/getTop/{subject}/{group}")//error500
     public ResponseEntity<?> getTopStudents(@PathVariable Integer idSubject,@PathVariable Integer group){
         return ResponseEntity.ok(briefingService.getTopStudents(idSubject, group));
@@ -30,5 +33,9 @@ public class TeacherController {
     public ResponseEntity<?> getQuestionAvgGrade(@PathVariable Integer subjectId){
         return ResponseEntity.ok(briefingService.getQuestionAvgGrade(subjectId));
     }
-
+    //Непроверенные летучки препода
+    @GetMapping("/getQuestionNoCheck/{teacherId}")
+    public ResponseEntity<?> getQuestionNoCheck(@PathVariable Integer teacherId){
+        return ResponseEntity.ok(teacherService.getAnswerNoMark(teacherId));
+    }
 }
