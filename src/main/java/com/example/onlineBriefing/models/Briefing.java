@@ -30,12 +30,12 @@ public class Briefing {
     private String title;
 
     @Column(name = "duration", columnDefinition = "INTERVAL")
-    private Duration duration;
+    private String duration;
 
     @Column(name = "status")
     private String status;//ENUM:   OPEN, CLOSE
 
-    public Briefing(Integer idSubject, Integer number, String title, Duration duration, String status) {
+    public Briefing(Integer idSubject, Integer number, String title, String duration, String status) {
         this.idSubject = idSubject;
         this.number = number;
         this.title = title;
