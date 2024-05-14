@@ -17,7 +17,7 @@ public class TeacherController {
     private AnswerStudentService answerStudentService;
     @Autowired
     private TeacherService teacherService;
-    @GetMapping("/getTop/{subject}/{group}")//error500
+    @GetMapping("/getTop/{subject}/{group}")
     public ResponseEntity<?> getTopStudents(@PathVariable Integer subject,@PathVariable Integer group){
         return ResponseEntity.ok(briefingService.getTopStudents(subject, group));
     }
