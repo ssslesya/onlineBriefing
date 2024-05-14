@@ -52,7 +52,7 @@ public class AnswerStudentService {
 
 
     public String getAnswerDetails(Integer idQuestion, Integer idStudent) {
-        AnswerStudent answerStudent = answerStudentRepository.findByQuestionAndStudent(idQuestion, idStudent);
+        AnswerStudent answerStudent = answerStudentRepository.findByQuestionAndIdStudent(idQuestion, idStudent);
         if (answerStudent == null) {
             throw new RuntimeException("Answer not found for question id: " + idQuestion + " and student id: " + idStudent);
         }
@@ -74,9 +74,5 @@ public class AnswerStudentService {
         return plagiatRepository.findByAnswerStudent2(answerStudent.getId());
     }
 
-    private boolean checkPlagiarism(String text) {
-        // Здесь реализуйте логику проверки на плагиат
-        // В данном примере просто возвращаем false для демонстрации
-        return false;
-    }
+
 }
