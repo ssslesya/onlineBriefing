@@ -67,4 +67,8 @@ public class BriefingService {
         return briefingRepository.save(briefing);
     }
 
+    public List<Briefing> findAllBriefings() {
+        return briefingRepository.findAll();
+    }
+
 }

@@ -47,4 +47,17 @@ public class BriefingController {
                 }).orElseThrow(() -> new BriefingNotFoundException(id));
     }
 
+    @PutMapping("editStatusInBriefings/{id}")
+    public ResponseEntity<Briefing> editStatusInBriefing(@RequestBody String status, @PathVariable Integer id) {
+        List<Briefing> briefings = briefingService.findAllBriefings();
+        Briefing briefingToUpdate = briefings.stream()
+                .filter(briefing -> briefing.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new BriefingNotFoundException(id));
+
+        briefingToUpdate.setStatus(status);
+        briefingService.addBriefing(briefingToUpdate);
+        return ResponseEntity.ok(briefingToUpdate);
+    }
+
 }
