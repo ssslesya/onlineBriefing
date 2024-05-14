@@ -1,6 +1,8 @@
 package com.example.onlineBriefing.controllers;
 
+import com.example.onlineBriefing.exceptions.BriefingNotFoundException;
 import com.example.onlineBriefing.models.AnswerStudent;
+import com.example.onlineBriefing.models.Briefing;
 import com.example.onlineBriefing.services.AnswerStudentService;
 import com.example.onlineBriefing.services.BriefingService;
 import com.example.onlineBriefing.services.NewsService;
@@ -34,6 +36,15 @@ public class BriefingController {
         List<AnswerStudent> addedAnswerStudents = answerStudentService.addAnswer(answerStudents);//Добавляем в БД
         System.out.println(answerStudentService.checkAnswer(addedAnswerStudents)); //Ответы на вопросы с автоматической проверкой сразу проверяются
         return ResponseEntity.ok(addedAnswerStudents);
+    }
+
+    @PutMapping("editStatus/{id}")
+    public Briefing editStatus(@RequestBody String status, @PathVariable Integer id){
+        return briefingService.findBriefingById(id)
+                .map(br -> {
+                    br.setStatus(status);
+                    return briefingService.addBriefing(br);
+                }).orElseThrow(() -> new BriefingNotFoundException(id));
     }
 
 }

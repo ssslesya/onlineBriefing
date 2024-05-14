@@ -1,9 +1,6 @@
 package com.example.onlineBriefing.services;
 
-import com.example.onlineBriefing.models.AnswerStudent;
-import com.example.onlineBriefing.models.Briefing;
-import com.example.onlineBriefing.models.News;
-import com.example.onlineBriefing.models.Question;
+import com.example.onlineBriefing.models.*;
 import com.example.onlineBriefing.repositories.AnswerStudentRepository;
 import com.example.onlineBriefing.repositories.BriefingRepository;
 import com.example.onlineBriefing.repositories.QuestionRepository;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BriefingService {
@@ -60,4 +58,13 @@ public class BriefingService {
         }
         return sum/count;
     }
+
+    public Optional<Briefing> findBriefingById(Integer id) {
+        return briefingRepository.findById(id);
+    }
+
+    public Briefing addBriefing(Briefing briefing) {
+        return briefingRepository.save(briefing);
+    }
+
 }
