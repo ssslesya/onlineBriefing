@@ -16,4 +16,8 @@ public class QuestionService {
     public List<Question> getQuestionsByIdBriefing(Integer id_briefing){
         return questionRepository.findAllByBriefing(id_briefing) ;
     }
+
+    public List<Question> addQuestions(List<Question> questions) {
+        return questionRepository.saveAll(questions);
+    }
 }
