@@ -54,7 +54,7 @@ public class StudentController {
         return ResponseEntity.ok(plagiat.getAnswerStudent1());
     }
     //Получить рейтинг студента
-    @GetMapping("/getRating/{idStudent}/{subject}")
+    @GetMapping("/getRating/{idStudent}/{subject}")//error500
     public ResponseEntity<?> getRating(@PathVariable Integer idStudent, @PathVariable Integer idSubject){
         return ResponseEntity.ok(briefingService.getTopStudent(idStudent, idSubject));
     }
