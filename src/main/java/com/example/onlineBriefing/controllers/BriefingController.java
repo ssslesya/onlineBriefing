@@ -65,7 +65,7 @@ public class BriefingController {
         return ResponseEntity.ok(briefingToUpdate);
     }
 
-    @PostMapping("/addBriefing")
+    @PostMapping("/addBriefing")//енам все портит
     public ResponseEntity<Integer> addBriefing(@RequestBody Briefing briefing) {
         Briefing savedBriefing = briefingService.addBriefing(briefing);
         return ResponseEntity.ok(savedBriefing.getId());

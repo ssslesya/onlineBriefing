@@ -40,8 +40,8 @@ public class StudentController {
     }
 
     //Получить инфо о ответе студента
-    @PostMapping("/answerDetails")
-    public ResponseEntity<?> getAnswerDetails(@RequestBody Integer idQuestion, @RequestBody Integer idStudent) {
+    @PostMapping("/answerDetails/{idStudent}")
+    public ResponseEntity<?> getAnswerDetails(@RequestBody Integer idQuestion, @PathVariable Integer idStudent) {
         String res = answerStudentService.getAnswerDetails(idQuestion, idStudent);
         return ResponseEntity.ok(res);
     }

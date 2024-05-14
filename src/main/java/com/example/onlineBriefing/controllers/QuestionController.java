@@ -23,7 +23,7 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.getQuestionsByIdBriefing(id_briefing)) ;
     }
 
-    @PostMapping("/addAllQuestionForBriefing")
+    @PostMapping("/addAllQuestionForBriefing")//not-null property references a null or transient value : com.example.onlineBriefing.models.Question.briefing
     public ResponseEntity<List<Question>> addQuestionsByBriefing(@RequestBody List<Question> questions) {
         List<Question> savedQuestions = questionService.addQuestions(questions);
         return ResponseEntity.ok(savedQuestions);
