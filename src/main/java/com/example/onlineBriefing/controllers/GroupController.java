@@ -18,11 +18,11 @@ public class GroupController {
     @Autowired
     private UniversityGroupService universityGroupService;
 
-    @GetMapping("/findGroup")
+    @GetMapping("/findGroup/{idProfile}/{yearBegin}/{number}")
     public ResponseEntity<Integer> findGroupId(
-            @RequestParam Integer idProfile,
-            @RequestParam Integer yearBegin,
-            @RequestParam String number) {
+            @PathVariable Integer idProfile,
+            @PathVariable Integer yearBegin,
+            @PathVariable String number) {
 
         Optional<UniversityGroup> group = universityGroupService
                 .findGroupByProfileYearAndNumber(idProfile, yearBegin, number);
