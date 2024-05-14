@@ -2,12 +2,16 @@ package com.example.onlineBriefing.services;
 
 import com.example.onlineBriefing.models.AnswerStudent;
 import com.example.onlineBriefing.models.Plagiat;
+import com.example.onlineBriefing.models.Question;
 import com.example.onlineBriefing.repositories.AnswerStudentRepository;
 import com.example.onlineBriefing.repositories.PlagiatRepository;
+import com.example.onlineBriefing.repositories.QuestionRepository;
+import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PlagiatService {
@@ -16,6 +20,8 @@ public class PlagiatService {
     private PlagiatRepository plagiatRepository;
     @Autowired
     private AnswerStudentRepository answerStudentRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
 
     public Boolean plagiatCheckAll(List<AnswerStudent> answerStudents) {
         for (AnswerStudent answerStudent : answerStudents) {
@@ -27,13 +33,16 @@ public class PlagiatService {
     }
 
     public Boolean plagiatCheck(AnswerStudent answerStudent) {
-        List<AnswerStudent> answerStudents = answerStudentRepository.findAllByQuestion(answerStudent.getQuestion());
-        double similarity;
-        for (AnswerStudent answer : answerStudents) {
-            similarity = calculateLevenshteinDistance(answer.getText(), answerStudent.getText());
-            if (similarity > 0.8) {
-                plagiatRepository.save(new Plagiat(answer.getIdStudent(), answerStudent.getIdStudent()));
-                return false;
+        Question question = questionRepository.findById(answerStudent.getQuestion()).get();
+        if (!Objects.equals(question.getTypeVerification(), "автоматически")) {
+            List<AnswerStudent> answerStudents = answerStudentRepository.findAllByQuestion(answerStudent.getQuestion());
+            double similarity;
+            for (AnswerStudent answer : answerStudents) {
+                similarity = calculateLevenshteinDistance(answer.getText(), answerStudent.getText());
+                if (similarity > 0.8) {
+                    plagiatRepository.save(new Plagiat(answer.getIdStudent(), answerStudent.getIdStudent()));
+                    return false;
+                }
             }
         }
         return true;

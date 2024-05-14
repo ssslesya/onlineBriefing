@@ -33,9 +33,14 @@ public class TeacherController {
     public ResponseEntity<?> getQuestionAvgGrade(@PathVariable Integer subjectId){
         return ResponseEntity.ok(briefingService.getQuestionAvgGrade(subjectId));
     }
-    //Непроверенные летучки препода
+    //Непроверенные ответы на вопросы препода
     @GetMapping("/getQuestionNoCheck/{teacherId}")
     public ResponseEntity<?> getQuestionNoCheck(@PathVariable Integer teacherId){
+        return ResponseEntity.ok(teacherService.getAnswerNoMark(teacherId));
+    }
+    //Непроверенные списанные ответы на вопросы препода
+    @GetMapping("/getQuestionNoCheck/{teacherId}")
+    public ResponseEntity<?> getQuestionNoCheckAnd(@PathVariable Integer teacherId){
         return ResponseEntity.ok(teacherService.getAnswerNoMark(teacherId));
     }
 }
