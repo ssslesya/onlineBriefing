@@ -26,8 +26,9 @@ public class TeacherController {
 
     //Средний балл по летучкам предмета среди всех групп
 
-    @GetMapping("/getQuestionCheck/{subjectId}")
+    @GetMapping("/getQuestionAvgGrade/{subjectId}")
     public ResponseEntity<?> getQuestionAvgGrade(@PathVariable Integer subjectId){
         return ResponseEntity.ok(briefingService.getQuestionAvgGrade(subjectId));
     }
+
 }
