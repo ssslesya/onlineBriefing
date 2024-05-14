@@ -5,7 +5,6 @@ import com.example.onlineBriefing.models.AnswerStudent;
 import com.example.onlineBriefing.models.Briefing;
 import com.example.onlineBriefing.services.AnswerStudentService;
 import com.example.onlineBriefing.services.BriefingService;
-import com.example.onlineBriefing.services.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,6 +57,12 @@ public class BriefingController {
         briefingToUpdate.setStatus(status);
         briefingService.addBriefing(briefingToUpdate);
         return ResponseEntity.ok(briefingToUpdate);
+    }
+
+    @PostMapping("/addBriefing")
+    public ResponseEntity<Integer> addBriefing(@RequestBody Briefing briefing) {
+        Briefing savedBriefing = briefingService.addBriefing(briefing);
+        return ResponseEntity.ok(savedBriefing.getId());
     }
 
 }
